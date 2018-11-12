@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: odh-tensorflow-training
+  annotations:
+    description: "Template to train models using tensorflow"
+    displayName: "Tensorflow Training Job"
+    iconClass: "icon-python"
+    tags: "language,python"
+  labels:
+    template: odh-tensorglos-training
+objects:
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: odh-tensorflow-training-${APP_NAME}
+      app: ${APP_NAME}
+    name: odh-tensorflow-training-${APP_NAME}
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: odh-tensorflow-training-${APP_NAME}:latest
+    source:
+      contextDir: ${CONTEXT_DIR}
+      git:
+        uri: ${GIT_REPO}
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: centos/python-36-centos7
+      type: Source
+    triggers:
+    - type: ConfigChange
+  status:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      build: odh-tensorflow-training-${APP_NAME}
+      app: ${APP_NAME}
+    name: odh-tensorflow-training-${APP_NAME}
+  spec:
+    lookupPolicy:
+      local: true
+  status:
+
+    
+
+parameters:
+- name: APP_NAME
+  description: Short name of your application (to be used in OpenShift artifact names)
+  value: demo
+  required: true
+- name: TRAINING_STEPS
+  description: Number of training steps to perform
+  required: true
+  value: 10000
+- name: INPUT_DATA_LOCATION
+  description: "Location of input data in form of 's3://BUCKET/path/', path is used as prefix to lookup the data in S3"
+  value: s3://MY-BUCKET/data/
+  required: true
+- name: OUTPUT_MODEL_LOCATION
+  description: "Location where the resulting model will be stored"
+  required: true
+  value: s3://MY-BUCKET/model-out/
+- name: S3_ENDPOINT_URL
+  description: URL of S3 endpoint to be used for data storage
+  required: true
+  value: https://s3.upshift.redhat.com
+- name: AWS_SECRET_ACCESS_KEY
+  description: S3 instance secret access key
+  required: true
+- name: AWS_ACCESS_KEY_ID
+  description: S3 instance access key id
+  required: true
+- name: MEMORY
+  description: Memory limit to be assigned to the job
+  value: 2Gi
+  required: true
+- name: CPU
+  description: Limit for number of cores to assign to the job
+  value: 2
+  required: true
+- name: GIT_REPO
+  description: Repository to build from
+  value: https://github.com/vpavlin/odh-tensorflow-jobs
+  required: true
+- name: CONTEXT_DIR
+  description: Directory insight the git repository to use as root
+  value: .
+  required: true
