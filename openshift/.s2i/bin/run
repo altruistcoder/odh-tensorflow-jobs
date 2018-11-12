@@ -1,0 +1,18 @@
+#! /usr/bin/bash
+
+
+export GIT_COMMITTER_NAME='user_name'
+export GIT_COMMITTER_EMAIL='user@email'
+git clone ${GIT_REPO} app_code
+cd app_code
+if [ -n "${CONTEXT_DIR}" ]; then
+    echo "Using context dir ${CONTEXT_DIR}"
+    cd ${CONTEXT_DIR}
+fi
+pip install -r requirements.txt
+if [ -n "${RUN_FILE}" ]; then
+    echo "Running ${RUN_FILE}"
+    exec python ${RUN_FILE}
+else
+    exec python app.py
+fi

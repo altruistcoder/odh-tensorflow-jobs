@@ -1,2 +1,0 @@
-tensorflow
-file:///opt/app-root/src/pyodh
