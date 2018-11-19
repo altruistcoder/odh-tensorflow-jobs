@@ -41,7 +41,7 @@ class S3(object):
             endpoint_url=self.conf['url'])
         return conn
 
-    def download_data(self, bucket, target_dir=None, prefix=None):
+    def download_data(self, bucket, target_dir=None, prefix=None, unpack=False):
         for f in self.conn.list_objects(Bucket=bucket, Prefix=prefix)['Contents']:
             target_file = f['Key'].split("/")[-1]
             if target_dir:
@@ -51,6 +51,10 @@ class S3(object):
 
             _LOGGER.warn("Downloading %s from %s" % (target_file, f['Key']))
             self.conn.download_file(Bucket=bucket, Key=f['Key'], Filename="%s" % target_file)
+            if unpack:
+                tar = tarfile.open(target_file)
+                tar.extractall(path=target_dir)
+                tar.close()
 
     def upload_data(self, bucket, source=None, key_prefix=None):
         if not source:
