@@ -69,6 +69,8 @@ class S3(object):
             else:
                 files = [source]
 
+        if len(files) == 0:
+            raise Exception("Nothing to upload (%s)" % source)
         for f in files:
             self.conn.upload_file(Bucket=bucket, Key=os.path.join(key_prefix, f), Filename=f)
             print("File %s uploaded" % f)
