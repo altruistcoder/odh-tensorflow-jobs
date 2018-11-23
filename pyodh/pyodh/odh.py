@@ -78,7 +78,8 @@ class S3(object):
     def _make_tarfile(self, output_filename, source_dir):
         _LOGGER.warn("Creating gzipped tar %s from %s" %(output_filename, source_dir))
         with tarfile.open(output_filename, "w:gz") as tar:
-            tar.add(source_dir, arcname=os.path.basename(source_dir))
+            for o in os.listdir(source_dir):
+                tar.add(os.path.join(source_dir, o), arcname=o)
 
     def parse_s3_url(self, url):
         o = urlparse(url)

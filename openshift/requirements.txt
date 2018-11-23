@@ -1,1 +1,2 @@
-tensorflow
+boto3
+tensorflow==1.10.0

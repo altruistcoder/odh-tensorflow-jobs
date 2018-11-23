@@ -1,2 +1,2 @@
-tensorflow
+tensorflow==1.10.0
 ../pyodh

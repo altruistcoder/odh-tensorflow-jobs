@@ -14,7 +14,7 @@ objects:
 - apiVersion: batch/v1
   kind: Job
   metadata:
-    name: odh-tensorflow-training-${APP_NAME}
+    generateName: odh-tensorflow-training-${APP_NAME} 
     labels:
       app: ${APP_NAME}
       job: odh-tensorflow-training-${APP_NAME}
@@ -43,11 +43,29 @@ objects:
             value: ${RUN_FILE}
           - name: TRAINING_STEPS
             value: "${TRAINING_STEPS}"
+          - name: INPUT_DATA_LOCATION
+            value: ${INPUT_DATA_LOCATION}
+          - name: OUTPUT_MODEL_LOCATION
+            value: ${OUTPUT_MODEL_LOCATION}
+          - name: S3_ENDPOINT_URL
+            valueFrom:
+              secretKeyRef:
+                name: odh-config
+                key: s3_endpoint_url
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: odh-config
+                key: access_key
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: odh-config
+                key: key_id
           resources:
             limits:
               memory: '${MEMORY}'
               cpu: '${CPU}'
-
         restartPolicy: Never
     
 
@@ -68,16 +86,6 @@ parameters:
   description: "Location where the resulting model will be stored"
   required: true
   value: s3://MY-BUCKET/model-out/
-- name: S3_ENDPOINT_URL
-  description: URL of S3 endpoint to be used for data storage
-  required: true
-  value: https://s3.upshift.redhat.com
-- name: AWS_SECRET_ACCESS_KEY
-  description: S3 instance secret access key
-  required: true
-- name: AWS_ACCESS_KEY_ID
-  description: S3 instance access key id
-  required: true
 - name: MEMORY
   description: Memory limit to be assigned to the job
   value: 2Gi
@@ -92,7 +100,7 @@ parameters:
   required: true
 - name: CONTEXT_DIR
   description: Directory inside the git repository to use as root
-  value:
+  value: training
 - name: RUN_FILE
   description: A file containing code doing the training
-  default: training/app.py
+  value: app.py
