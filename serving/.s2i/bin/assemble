@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+cp /tmp/src/* /opt/app-root/src/
+
+pip install -r /opt/app-root/src/requirements.txt
+
+curl -L -o /opt/app-root/bin/tensorflow_model_server https://github.com/sub-mod/tensorflow-wheels/releases/download/tf-serving-centos7/tensorflow_model_server
+chmod +x /opt/app-root/bin/tensorflow_model_server

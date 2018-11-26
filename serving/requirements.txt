@@ -1,0 +1,2 @@
+git+https://github.com/vpavlin/odh-tensorflow-jobs.git#egg=pyodh&subdirectory=pyodh # install a python package from a repo subdirectory
+boto3

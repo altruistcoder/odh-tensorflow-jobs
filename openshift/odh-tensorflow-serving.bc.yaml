@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: List
+metadata:
+  name: odh-tensorflow-serving-image
+items:
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: odh-tensorflow-serving
+    name: odh-tensorflow-serving
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: odh-tensorflow-serving:latest
+    source:
+      contextDir: serving
+      git:
+        uri: https://github.com/vpavlin/odh-tensorflow-jobs
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: DockerImage
+          name: centos/python-36-centos7:latest
+      type: Source
+    triggers:
+    - type: ConfigChange
+  status:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      build: odh-tensorflow-serving
+    name: odh-tensorflow-serving
+  spec:
+    lookupPolicy:
+      local: true
+  status:
