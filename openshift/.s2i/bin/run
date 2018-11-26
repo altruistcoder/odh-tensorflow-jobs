@@ -18,7 +18,7 @@ if [ -z "${RUN_FILE}" ]; then
     fi
 fi
 
-if [ "${RUN_FILE}" =~ .*\.py ]; then
+if [[ "${RUN_FILE}" =~ .*\.py ]]; then
     echo "Running python ${RUN_FILE}"
     exec python ${RUN_FILE}
 else
