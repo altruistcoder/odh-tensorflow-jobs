@@ -113,7 +113,8 @@
                                     },
                                     {
                                         "name": "jupyter-config",
-                                        "mountPath": "/opt/app-root/src/.jupyter"
+                                        "mountPath": "/opt/app-root/src/.jupyter/jupyter_config.py",
+                                        "subPath": "jupyter_config.py"
                                     }
                                 ],
                                 "env": [
