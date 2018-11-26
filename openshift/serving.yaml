@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: odh-tensorflow-serving
+  annotations:
+    description: "Template to serve models using tensorflow"
+    openshift.io/display-name: "Tensorflow Serving"
+    iconClass: "icon-python"
+    tags: "opendatahub,tensorflow"
+    openshift.io/provider-display-name: "Open Data Hub"
+  labels:
+    template: odh-tensorlow-serving
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    name: odh-tensorflow-serving-${APP_NAME}
+    generateName: odh-tensorflow-serving-${APP_NAME} 
+    labels:
+      app: ${APP_NAME}
+      job: odh-tensorflow-serving-${APP_NAME}
+  spec:   
+    replicas: 1
+    template:         
+      metadata:
+        name: odh-tensorflow-serving-${APP_NAME}
+        labels:
+          app: ${APP_NAME}
+          dc: odh-tensorflow-serving-${APP_NAME}
+      spec:
+        restartPolicy: Always
+        automountServiceAccountToken: false
+        containers:
+        - name: ${APP_NAME}
+          image: odh-tensorflow-serving
+          env:
+          - name: INPUT_MODEL_LOCATION
+            value: ${INPUT_MODEL_LOCATION}
+          - name: MODEL_NAME
+            value: ${MODEL_NAME}
+          - name: S3_ENDPOINT_URL
+            valueFrom:
+              secretKeyRef:
+                name: odh-config
+                key: s3_endpoint_url
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: odh-config
+                key: access_key
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: odh-config
+                key: key_id
+          ports:
+          - containerPort: 6006
+            protocol: TCP
+          resources:
+            limits:
+              memory: '${MEMORY}'
+              cpu: '${CPU}' 
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: odh-tensorflow-serving-${APP_NAME}
+    labels:
+      app: ${APP_NAME}
+  spec:
+    selector:
+      dc: odh-tensorflow-serving-${APP_NAME}
+    ports:
+    - port: 6006
+      protocol: TCP
+      targetPort: 6006
+parameters:
+- name: APP_NAME
+  description: Short name of your application (to be used in OpenShift artifact names)
+  value: demo
+  required: true
+- name: INPUT_MODEL_LOCATION
+  description: "Location where the resulting model will be stored"
+  required: true
+  value: s3://MY-BUCKET/model-out/
+- name: MODEL_NAME
+  description: "Name of the model"
+  value: mnist
+- name: MEMORY
+  description: Memory limit to be assigned to the job
+  value: 1Gi
+  required: true
+- name: CPU
+  description: Limit for number of cores to assign to the job
+  value: "1"
+  required: true
+

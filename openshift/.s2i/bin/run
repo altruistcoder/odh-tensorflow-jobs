@@ -10,9 +10,18 @@ if [ -n "${CONTEXT_DIR}" ]; then
     cd ${CONTEXT_DIR}
 fi
 pip install -r requirements.txt
-if [ -n "${RUN_FILE}" ]; then
-    echo "Running ${RUN_FILE}"
+if [ -z "${RUN_FILE}" ]; then
+    if [ -e "run.sh" ]; then
+        RUN_FILE="run.sh"
+    else
+        RUN_FILE="app.py"
+    fi
+fi
+
+if [ "${RUN_FILE}" =~ .*\.py ]; then
+    echo "Running python ${RUN_FILE}"
     exec python ${RUN_FILE}
 else
-    exec python app.py
+    echo "Runing bash ${RUN_FILE}"
+    exec bash ${RUN_FILE}
 fi
