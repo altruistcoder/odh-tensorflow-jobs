@@ -274,6 +274,25 @@
             }
         },
         {
+		    "kind": "RoleBinding",
+		    "apiVersion": "v1",
+		    "metadata": {
+			"name": "${APPLICATION_NAME}-edit",
+                        "labels": {
+                            "app": "${APPLICATION_NAME}"
+                        }
+		    },
+		    "subjects": [
+			{
+			    "kind": "ServiceAccount",
+			    "name": "${APPLICATION_NAME}"
+			}
+		    ],
+		    "roleRef": {
+			    "name": "edit"
+		    }
+		},
+        {
             "apiVersion": "v1",
             "kind": "ConfigMap",
             "metadata": {

@@ -14,7 +14,7 @@ objects:
 - apiVersion: batch/v1
   kind: Job
   metadata:
-    generateName: odh-tensorflow-training-${APP_NAME} 
+    name: odh-tensorflow-training-${APP_NAME} 
     labels:
       app: ${APP_NAME}
       job: odh-tensorflow-training-${APP_NAME}
