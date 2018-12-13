@@ -38,6 +38,6 @@ Once the templates are imported you can either deploy them from OpenShift Catalo
 
 ## Controlling from Jupyter Notebook
 
-There is an example notebook ready in this repository - (odh-tensorflow-jobs.ipynb). To be able to run it successfully you will first need to deploy Jupyter Notebook server - simply head over to OpenShift Catalog in your namespace and click the Jupyter Workspace template. Follow the wizard and you should get a URL to your Jupyter Notebook server displayed in your namespace overview.
+There is an example notebook ready in this repository - [odh-tensorflow-jobs.ipynb](https://github.com/vpavlin/odh-tensorflow-jobs/blob/master/odh-tensorflow-jobs.ipynb). To be able to run it successfully you will first need to deploy Jupyter Notebook server - simply head over to OpenShift Catalog in your namespace and click the Jupyter Workspace template. Follow the wizard and you should get a URL to your Jupyter Notebook server displayed in your namespace overview.
 
 Login to your Jupyter server and upload the notebook from this repository. Follow the notebook to get a model trained and served.   
