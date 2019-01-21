@@ -16,5 +16,6 @@ function _install() {
 _install "jupyter/jupyter-tensorflow.json"
 _install "odh-config.yaml"
 _install "odh-tensorflow-serving.bc.yaml"
+_install "odh-tensorflow-training.bc.yaml"
 _install "serving.yaml"
 _install "training.job.yaml"

@@ -191,7 +191,6 @@
             "metadata": {
                 "name": "${APPLICATION_NAME}-data",
                 "annotations": {
-                    "volume.beta.kubernetes.io/storage-class": "ceph-dyn-datahub-paas"
                 },
                 "labels": {
                     "app": "${APPLICATION_NAME}"

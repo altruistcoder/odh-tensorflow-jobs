@@ -25,7 +25,6 @@ parameters:
 - name: S3_ENDPOINT_URL
   description: URL of S3 endpoint to be used for data storage
   required: true
-  value: https://s3.upshift.redhat.com
 - name: AWS_SECRET_ACCESS_KEY
   description: S3 instance secret access key
   required: true
