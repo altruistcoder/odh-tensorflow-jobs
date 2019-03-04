@@ -1,0 +1,43 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: ohd-tensorflow-serving-knative
+spec:
+  runLatest:
+    configuration:
+      revisionTemplate:
+        metadata:
+          annotations:
+            # Target 10 in-flight-requests per pod.
+            autoscaling.knative.dev/target: "1"
+        spec:
+          container:
+            image: image-registry.openshift-image-registry.svc:5000/myproject/odh-tensorflow-serving:latest
+            env:
+            - name: INPUT_MODEL_LOCATION
+              value: "s3://ODH-TENSORFLOW-JOBS-DEMO/output-model"
+            - name: MODEL_NAME
+              value: intect
+            - name: S3_ENDPOINT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: odh-config
+                  key: s3_endpoint_url
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: odh-config
+                  key: access_key
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: odh-config
+                  key: key_id
+            ports:
+            - containerPort: 6006
+              protocol: TCP
+              name: http1
+            resources:
+              limits:
+                memory: 2Gi
+                cpu: 2

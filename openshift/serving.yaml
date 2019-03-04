@@ -32,7 +32,7 @@ objects:
         automountServiceAccountToken: false
         containers:
         - name: ${APP_NAME}
-          image: odh-tensorflow-serving
+          image: image-registry.openshift-image-registry.svc:5000/myproject/odh-tensorflow-serving
           env:
           - name: INPUT_MODEL_LOCATION
             value: ${INPUT_MODEL_LOCATION}

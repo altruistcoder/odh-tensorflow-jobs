@@ -6,4 +6,4 @@ set -ex
 python prep.py 
 
 # Run serving
-tensorflow_model_server --port=6006 --model_name=$MODEL_NAME --model_base_path=/opt/app-root/src/$MODEL_PATH
+tensorflow_model_server --port=6006 --rest_api_port=${PORT} --model_name=$MODEL_NAME --model_base_path=/opt/app-root/src/$MODEL_PATH
