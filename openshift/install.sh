@@ -27,10 +27,10 @@ if [ "${GIT_REF}" == "knative" ]; then
     oc adm policy add-scc-to-user privileged -z default
 
     #Deploy Ceph
-    _install "ceph/ceph-nano-rgw.secret.yaml"
-    _install "ceph/ceph-nano.statefulset.yaml"
-    _install "ceph/ceph-nano.svc.yaml"
     _install "ceph/ceph-nano.sa.yaml"
+    _install "ceph/ceph-nano-rgw.secret.yaml"
+    _install "ceph/ceph-nano.svc.yaml"
+    _install "ceph/ceph-nano.statefulset.yaml"
 
     oc adm policy add-scc-to-user anyuid -z ceph
 
