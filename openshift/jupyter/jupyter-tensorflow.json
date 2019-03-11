@@ -31,6 +31,11 @@
             "name": "VOLUME_SIZE",
             "value": "2Gi",
             "required": true
+        },
+        {
+            "name": "JUPYTER_PRELOAD_REPOS",
+            "value": "https://github.com/vpavlin/knative-tf-serving-notebook-demo",
+            "required": false
         }
     ],
     "objects": [
@@ -144,6 +149,10 @@
                                             "key": "key_id"
                                           }
                                         }
+                                    },
+                                    {
+                                        "name": "JUPYTER_PRELOAD_REPOS",
+                                        "value": "${JUPYTER_PRELOAD_REPOS}"
                                     }
                                 ]
                             },
